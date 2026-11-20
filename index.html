@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= Kiosk browser chrome (replicates the blue bar + toolbar) ================= -->
+  <div class="browser-chrome">
+    <div class="browser-tabbar">
+      <div class="browser-tab">
+        <span class="browser-tab-title">SHL</span>
+        <span class="browser-tab-x">&#10005;</span>
+      </div>
+      <button class="browser-close" title="Close">&#10005;</button>
+    </div>
+    <div class="browser-toolbar">
+      <button class="bt-icon" title="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+      <button class="bt-icon bt-disabled" title="Forward"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button class="bt-icon" title="Stop"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <button class="bt-icon" title="Refresh"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-1.5 6"/><path d="M20 4v7h-7"/></svg></button>
+      <span class="bt-sep"></span>
+      <button class="bt-icon" title="Information"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7.2v.2"/></svg></button>
+      <span class="bt-sep"></span>
+      <button class="bt-icon" title="New tab"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M12 9v6M9 12h6"/></svg></button>
+      <span class="bt-url"></span>
+    </div>
+  </div>
+
+  <!-- ================= Header ================= -->
+  <header class="shl-header">
+    <span class="shl-logo" title="SHL">
+      <svg xmlns="http://www.w3.org/2000/svg" data-name="SHL Logo - Full Colour" viewBox="0 0 111.15 48.58" role="img" aria-label="SHL"><path fill="#4a4a4a" d="M30 3.62A3.62 3.62 0 1 1 26.42 0 3.62 3.62 0 0 1 30 3.62" data-name="Path 1"/><path fill="#78D64B" d="M111.15 44.64a3.62 3.62 0 1 1-3.62-3.64 3.62 3.62 0 0 1 3.62 3.61" data-name="Path 2"/><path fill="#4a4a4a" d="M58 27.06h-9.47a3.05 3.05 0 0 1 0-6.1H58a3.05 3.05 0 0 1 0 6.1" data-name="Path 3"/><path fill="#4a4a4a" d="M41 48.58a3 3 0 0 1-3-3V3.61a3 3 0 1 1 6-.11v42a3 3 0 0 1-3 3" data-name="Path 5"/><path fill="#4a4a4a" d="M65.35 48.58a3 3 0 0 1-3-3V3.61a3.05 3.05 0 0 1 6.1-.11v42a3 3 0 0 1-3.05 3" data-name="Path 6"/><path fill="#4a4a4a" d="M99.46 47.65h-7.67a13.25 13.25 0 0 1-13.23-13.23V3.86a3.045 3.045 0 0 1 6.09-.11v30.67a7.16 7.16 0 0 0 7.14 7.14h7.67a3.045 3.045 0 1 1 0 6.09" data-name="Path 7"/><path fill="#4a4a4a" d="M17.27 21h-2.36a7.14 7.14 0 0 1-7.14-7.13 7.15 7.15 0 0 1 7.14-7.14H19a3.085 3.085 0 1 0 0-6.17h-4.09A13.25 13.25 0 0 0 1.68 13.79v.39a.61.61 0 0 0 0 .14 13.25 13.25 0 0 0 13.23 12.74h2.36a7.14 7.14 0 0 1 7.14 7.13v.23a7.14 7.14 0 0 1-7.14 7.13H3.05a3.05 3.05 0 1 0 0 6.1h14.22a13.25 13.25 0 0 0 13.19-12.18v-.28a1.93 1.93 0 0 1 0 .24v-1.24A13.25 13.25 0 0 0 17.27 21zm-9.5-6.67v-.11a.41.41 0 0 1 0-.11zM24.41 35a1.93 1.93 0 0 0 0 .24v.23z" data-name="Path 8"/></svg>
+    </span>
+
+    <span class="timer-pill" id="timer-pill">00 : 00</span>
+
+    <div class="header-actions">
+      <button class="hbtn" id="btn-show-tips" title="Show tips" style="display:none">
+        <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.7 1.3 1.5 1.5 2.5h5c.2-1 .7-1.8 1.5-2.5A6 6 0 0 0 12 3z"/></svg>
+        Show tips
+      </button>
+      <button class="hbtn" id="btn-fullscreen" title="Full screen">
+        <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+      <button class="hbtn" id="btn-help" title="Help">
+        <svg viewBox="0 0 24 24" class="qmark"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.5 2.5 0 1 1 3.8 2.1c-.8.5-1.3 1-1.3 1.9"/><circle cx="12" cy="16.8" r="0.6" fill="#555" stroke="none"/></svg>
+        Help
+      </button>
+      <button class="hbtn" id="btn-exit" title="Exit">
+        <svg viewBox="0 0 24 24"><path d="M14 3.9a8.5 8.5 0 1 0 0 16.2"/><path d="M11 12h10M17.5 8.5 21 12l-3.5 3.5"/></svg>
+        Exit
+      </button>
+      <button class="hamburger" id="btn-hamburger" title="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="menu-pop" id="menu-pop">
+      <div class="profile-row"><span class="profile-label">Name:</span><span class="profile-value" id="profile-val-name">&mdash;</span></div>
+      <div class="profile-row"><span class="profile-label">Participant ID:</span><span class="profile-value" id="profile-val-pid">&mdash;</span></div>
+      <div class="profile-row"><span class="profile-label">Assessment Language:</span><span class="profile-value" id="profile-val-alang">&mdash;</span></div>
+      <div class="profile-row"><span class="profile-label">Navigation language:</span><span class="profile-value" id="profile-val-nlang">&mdash;</span></div>
+      <button class="profile-link" id="menu-notice">Data Protection Notice</button>
+      <button class="menu-action" id="menu-edit-profile">Edit details</button>
+    </div>
+  </header>
+
+  <!-- ================= Assessments view ================= -->
+  <section class="view active" id="view-assessments">
+    <div class="assess-wrap">
+      <div class="assess-column">
+        <div class="assess-card">
+          <div class="assess-title">Assessments</div>
+          <div class="assess-rows" id="assess-rows"></div>
+          <button type="button" class="assess-expand" id="assess-expand" title="Scroll down">
+            <svg viewBox="0 0 24 24" id="assess-expand-icon"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="assess-footer">
+          <button class="btn-green pill" id="btn-next">NEXT</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Data Protection Notice view ================= -->
+  <section class="view" id="view-notice">
+    <div class="intro-wrap">
+      <div class="intro-card">
+        <h1 class="intro-title">Candidate Online Assessment Data Protection Notice</h1>
+        <div class="intro-note">
+          <p><b>This Notice was last updated on May 9 2025.</b></p>
+          <p><b>CHANGES TO THIS NOTICE:</b> This Notice has been updated following an annual review to include new product information, improve the ease of use and address additional data protection laws.</p>
+        </div>
+        <div class="acc" id="acc-1">
+          <button type="button" class="acc-head">Who we are and Scope of Notice</button>
+          <div class="acc-body">SHL is a global provider of talent assessment solutions. This Notice explains who we are, what personal data we collect about you when you take an online assessment and why we need it.</div>
+        </div>
+        <div class="acc" id="acc-2">
+          <button type="button" class="acc-head">Employer as the Data Controller</button>
+          <div class="acc-body">The organisation that invited you to complete this assessment is the data controller for your personal data. It decides why and how your data is processed and how long it is kept.</div>
+        </div>
+        <div class="acc" id="acc-3">
+          <button type="button" class="acc-head">SHL as the Data Controller</button>
+          <div class="acc-body">Where SHL determines the purposes and the means of the processing - for example when we administer the assessment on the employer's behalf - SHL acts as the data controller for that processing.</div>
+        </div>
+        <div class="acc" id="acc-4">
+          <button type="button" class="acc-head">Data Sharing and Your Rights</button>
+          <div class="acc-body">Your personal data may be shared with the employer that invited you to this assessment and with trusted service providers who host and support the assessment platform, always under appropriate safeguards.</div>
+        </div>
+        <div class="acc" id="acc-5">
+          <button type="button" class="acc-head">SHL Data Protection Officer Contact Details</button>
+          <div class="acc-body">You can reach our Data Protection Officer at privacy@shl.com for any questions about this Notice or how your personal data is processed.</div>
+        </div>
+        <div class="intro-footer">
+          <label class="acc-confirm"><input type="checkbox" id="notice-check"> <span>I confirm I have read and understood this Notice.</span></label>
+          <button class="btn-green" id="notice-continue" disabled>Continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Personal Information view ================= -->
+  <section class="view" id="view-personal">
+    <div class="intro-wrap">
+      <div class="intro-card wide">
+        <p class="mandatory-note">* Indicates mandatory fields.*</p>
+        <div class="pi-section" id="pi-section-1">
+          <div class="pi-section-head">
+            <h2>Personal Information</h2>
+            <button type="button" class="pi-collapse" aria-label="Collapse section"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
+          </div>
+          <div class="pi-fields">
+            <div class="pi-field"><label for="pf-regno">LPU Registration Number<span class="req">*</span></label><input type="text" id="pf-regno"></div>
+            <div class="pi-field"><label for="pf-name">Name<span class="req">*</span></label><input type="text" id="pf-name"></div>
+            <div class="pi-field"><label for="pf-email">Email ID<span class="req">*</span></label><input type="email" id="pf-email"></div>
+            <div class="pi-field"><label for="pf-contact">Contact Number<span class="req">*</span></label><input type="tel" id="pf-contact"></div>
+          </div>
+        </div>
+        <div class="pi-section" id="pi-section-2">
+          <div class="pi-section-head">
+            <h2>Security Question</h2>
+            <button type="button" class="pi-collapse" aria-label="Collapse section"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
+          </div>
+          <div class="pi-fields">
+            <div class="pi-field"><label for="pf-secq">Select a security question<span class="req">*</span></label>
+              <select id="pf-secq">
+                <option value="">Select a security question</option>
+                <option>What was your first school name?</option>
+                <option>What is your mother's maiden name?</option>
+                <option>What was your first mobile number?</option>
+                <option>What is your favourite book?</option>
+                <option>What is your birth place?</option>
+              </select>
+            </div>
+            <div class="pi-field"><label for="pf-seca">Answer<span class="req">*</span></label><input type="text" id="pf-seca"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms & Conditions + actions: fixed bar at the bottom of the page -->
+    <div class="pi-fixed-footer">
+      <div class="pi-footer-inner">
+        <div class="form-error" id="pi-error" hidden></div>
+        <div class="tc-row">
+          <button type="button" class="switch" id="tc-toggle" aria-pressed="false">
+            <span class="switch-track"><span class="switch-knob"></span></span>
+            <span class="switch-label">No</span>
+          </button>
+          <span class="tc-text">I agree to <a href="#" id="tc-link">Terms and Conditions</a></span>
+        </div>
+        <div class="pi-buttons">
+          <button type="button" class="btn-pill" id="pi-cancel" style="display:none">CANCEL</button>
+          <button type="button" class="btn-pill primary" id="pi-continue">CONTINUE</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MCQ test view ================= -->
+  <section class="view" id="view-test">
+
+    <div class="test-wrap" id="test-mcq" style="display:none">
+      <div class="q-pane">
+        <div class="q-instruction" id="mcq-instruction">Choose the correct option.</div>
+        <div class="q-text" id="mcq-text"></div>
+        <div class="q-passage q-passage-boxed" id="mcq-passage" style="display:none"></div>
+      </div>
+      <div class="opt-pane">
+        <div class="opt-heading" id="opt-heading">Options</div>
+        <div class="opt-list" id="opt-list"></div>
+      </div>
+    </div>
+
+    <!-- Personality: statement on top, toggle-style slider just below -->
+    <div class="likert-wrap" id="test-likert" style="display:none">
+      <div class="likert-body">
+        <div class="q-instruction" id="likert-instruction">Choose the option that best describes you.</div>
+        <div class="likert-statement" id="likert-statement"></div>
+        <div class="likert-toggle" id="likert-slider" data-value="">
+          <div class="toggle-track" id="likert-track">
+            <span class="toggle-tick" style="left:calc(18px + 0*(100% - 36px)/4)"></span>
+            <span class="toggle-tick" style="left:calc(18px + 1*(100% - 36px)/4)"></span>
+            <span class="toggle-tick" style="left:calc(18px + 2*(100% - 36px)/4)"></span>
+            <span class="toggle-tick" style="left:calc(18px + 3*(100% - 36px)/4)"></span>
+            <span class="toggle-tick" style="left:calc(18px + 4*(100% - 36px)/4)"></span>
+            <button class="toggle-knob" id="likert-knob" aria-label="Drag to choose your answer"></button>
+          </div>
+          <div class="toggle-labels">
+            <span class="toggle-label" style="left:calc(18px + 0*(100% - 36px)/4)">Strongly Disagree</span>
+            <span class="toggle-label" style="left:calc(18px + 1*(100% - 36px)/4)">Disagree</span>
+            <span class="toggle-label" style="left:calc(18px + 2*(100% - 36px)/4)">Neither agree nor disagree</span>
+            <span class="toggle-label" style="left:calc(18px + 3*(100% - 36px)/4)">Agree</span>
+            <span class="toggle-label" style="left:calc(18px + 4*(100% - 36px)/4)">Strongly Agree</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mcq-footer" id="mcq-footer">
+      <button class="btn-green" id="btn-submit-answer">SUBMIT ANSWER<span class="btn-chev">&#8250;</span></button>
+      <button class="btn-green" id="btn-next-section" style="display:none">NEXT SECTION<span class="btn-chev">&#8250;</span></button>
+    </div>
+
+    <!-- ================= Coding test view ================= -->
+    <div class="code-wrap" id="test-code" style="display:none">
+
+      <div class="code-q-pane" id="code-q-pane">
+        <div id="code-q-content"></div>
+      </div>
+
+      <!-- draggable splitter: drag left for a bigger editor, right for a bigger question pane -->
+      <div class="pane-divider" id="pane-divider" title="Drag to resize — double-click to reset"></div>
+
+      <div class="code-editor-pane">
+        <div class="editor-toolbar">
+          <span class="toolbar-icons">
+            <button title="Toggle theme" onclick="alert('Theme switching is not available in this clone.')">
+              <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18z"/><path d="M12 3a9 9 0 1 1 0 18"/></svg>
+            </button>
+            <button title="Reset code" onclick="window.__resetCode && window.__resetCode()">
+              <svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 6"/><path d="M4 4v6h6"/></svg>
+            </button>
+            <button title="Save code" onclick="window.__saveCode && window.__saveCode()">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v5h8V4M8 20v-6h8v6"/></svg>
+            </button>
+          </span>
+          <select class="lang-select" id="lang-select"></select>
+        </div>
+
+        <div class="editor-body">
+          <div class="code-gutter" id="code-gutter"></div>
+          <div class="code-area">
+            <pre id="code-hl"></pre>
+            <textarea id="code-input" spellcheck="false" autocomplete="off"></textarea>
+          </div>
+        </div>
+
+        <div class="editor-footer">
+          <button class="collapse-chev" id="tc-chev" title="Collapse / expand output">
+            <svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>
+          </button>
+          <button class="tc-toggle" id="tc-panel-toggle">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg>
+            Test Cases &amp; Output
+          </button>
+          <span class="spacer"></span>
+          <button class="btn-run" id="btn-run-solution"><span class="play"></span> RUN SOLUTION</button>
+          <button class="btn-green" id="btn-submit-assessment">SUBMIT ASSESSMENT</button>
+        </div>
+
+        <div class="tc-panel" id="tc-panel">
+          <div class="tc-panel-head">
+            <span>Test Cases &amp; Output</span>
+            <button class="tc-close" id="tc-panel-close">&#10005;</button>
+          </div>
+          <div class="tc-body" id="tc-body"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Completion view ================= -->
+  <section class="view" id="view-complete">
+    <div class="done-wrap">
+      <div class="done-card">
+        <p>You have successfully completed your test. Result will be available on your AMCAT Dashboard within a week.</p>
+        <p>Follow us on social media handle to get insights on career related informative articles, jobs and promotions. Check our social media channels.</p>
+        <p>Facebook: <a href="https://www.facebook.com/myamcat" target="_blank" rel="noopener">https://www.facebook.com/myamcat</a></p>
+        <p>Instagram: <a href="https://www.instagram.com/myamcatofficial/" target="_blank" rel="noopener">https://www.instagram.com/myamcatofficial/</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/showcase/myamcat" target="_blank" rel="noopener">https://www.linkedin.com/showcase/myamcat</a></p>
+        <p>YouTube: <a href="https://www.youtube.com/@AMCATtest" target="_blank" rel="noopener">https://www.youtube.com/@AMCATtest</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Navigator rail ================= -->
+  <div class="nav-rail" id="nav-rail" style="display:none">
+    <button class="nav-chev" id="nav-up" title="Scroll up">
+      <svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>
+    </button>
+    <div class="nav-scroll" id="nav-scroll">
+      <div class="nav-track" id="nav-track"></div>
+    </div>
+    <button class="nav-chev" id="nav-down" title="Scroll down">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- ================= Modals ================= -->
+  <div class="modal-overlay" id="modal-exit">
+    <div class="modal">
+      <div class="modal-head">Exit test</div>
+      <div class="modal-body">
+        Are you sure you want to exit this section? Your progress and remaining time will be
+        saved, and you can resume later.
+      </div>
+      <div class="modal-foot">
+        <button class="btn-plain" id="exit-cancel">Cancel</button>
+        <button class="btn-green" id="exit-confirm">Exit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-help">
+    <div class="modal">
+      <div class="modal-head">Help</div>
+      <div class="modal-body">
+        <b>About this portal</b><br>
+        This is a working clone of the SHL AMCAT test-delivery portal, built from real screen
+        photos. It contains 8 assessments with a real question bank:
+        <ul>
+          <li>English Comprehension (18 questions), Logical Ability (12), Quantitative Ability (16)</li>
+          <li>Personality (72 statements on a 5-point scale)</li>
+          <li>Computer Programming (25), Computer Science (20)</li>
+          <li>Automata Pro (2 coding problems) &amp; Automata Fix (7 debug-the-code problems)</li>
+        </ul>
+        <br>
+        <b>Controls</b>
+        <ul>
+          <li>The timer at the top counts down per section; when it reaches zero the section auto-submits.</li>
+          <li>Use the numbered rail on the right to jump between questions (green = answered).</li>
+        </ul>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-green" id="help-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-tips">
+    <div class="modal">
+      <div class="modal-head">Show tips</div>
+      <div class="modal-body">
+        <b>Coding tips</b>
+        <ul>
+          <li>Read the input strictly in the format described &mdash; extra printing causes test cases to fail.</li>
+          <li>Do not print prompt messages like &ldquo;Enter a number&rdquo;; print only the required output.</li>
+          <li>Use the sample test case to verify your logic before submitting.</li>
+          <li>Watch the constraints &mdash; prefer O(n) or O(n log n) algorithms for large inputs.</li>
+          <li>You can use cout / printf to debug, but remove debug prints before submitting.</li>
+        </ul>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-green" id="tips-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Data Protection Notice modal ================= -->
+  <div class="modal-overlay" id="modal-notice">
+    <div class="modal">
+      <div class="modal-head">Data Protection Notice</div>
+      <div class="modal-body">
+        This demo portal stores the candidate details you enter (name, participant ID and language
+        preferences) only in this browser's local storage. Nothing is transmitted to any server or
+        third party.
+        <br><br>
+        The information is used solely to personalise your test experience within this clone, for
+        example by displaying your name and participant ID in the menu panel.
+        <br><br>
+        You may review or edit your details at any time via the menu (&#8801;) &rarr;
+        <i>Edit details</i>.
+      </div>
+      <div class="modal-foot">
+        <button class="btn-green" id="notice-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-tc">
+    <div class="modal modal-lg">
+      <div class="modal-head">Terms and Conditions</div>
+      <div class="modal-body">
+        <p>1. This is a demonstration portal replicating the SHL AMCAT test-delivery flow for learning purposes. No real evaluation is performed and no data leaves this browser.</p>
+        <p>2. The candidate details you enter are stored only in this browser's local storage and are used solely to personalise the demo experience.</p>
+        <p>3. Questions, sections and durations mirror the real assessment structure; scores shown or implied here carry no official value.</p>
+        <p>4. By continuing you accept that this portal is a training/demonstration tool and agree to use it only for practice.</p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-green" id="tc-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="please-wait" id="please-wait">
+    <div class="pw-spinner"></div>
+    <div class="pw-text">Please wait&hellip;</div>
+  </div>
+</div>
+
+<script src="js/questions.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // editor toolbar extras
+  window.__saveCode = function () {
+    var ta = document.getElementById('code-input');
+    try { localStorage.setItem('shl-saved-code', ta.value); } catch (e) {}
+    if (window.toast) toast('Code saved.');
+  };
+  window.__resetCode = function () {
+    var id = window.state && state.currentSection;
+    if (!id) return;
+    var q = sectionQuestions(id)[state.currentIndex];
+    var langId = document.getElementById('lang-select').value;
+    if (id === 'autofix') setEditorContent(q.code);
+    else setEditorContent(langTemplate(langId).template);
+    if (window.toast) toast('Code reset to template.');
+  };
+</script>
+</body>
+</html>
