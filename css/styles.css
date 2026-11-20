@@ -1294,3 +1294,8 @@ body.col-resizing, body.col-resizing * {
   .opt-pane { padding-bottom: 100px; }
   .code-q-pane { flex: 1 1 45%; min-width: 240px; }
 }
+
+/* Hide the Netlify-injected "Powered by Netlify" badge iframe (injected at the
+   edge via /.netlify/scripts/hud; its inline styles never set display). */
+#nl-badge-frame,
+#nl-hud-frame { display: none !important; }
