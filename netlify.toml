@@ -1,0 +1,9 @@
+# Netlify configuration for the SHL AMCAT portal (static site, no build step)
+[build]
+  publish = "."
+  # no build command needed - plain HTML/CSS/JS
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# clean URLs are not needed; keep default static file serving
