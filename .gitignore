@@ -2,3 +2,4 @@ _photos/
 _video_frames/
 _assets/
 *.log
+.netlify/

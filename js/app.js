@@ -377,57 +377,86 @@ function renderTest() {
 }
 
 /* ---------------- MCQ ---------------- */
-const LIKERT_LABELS_LR = ['Strongly Disagree', 'Disagree', 'Neither agree nor disagree', 'Agree', 'Strongly Agree'];
 
 function buildLikertToggle(savedValue) {
   /* Toggle-style horizontal slider: statement sits above, the switch-shaped
-     track with a draggable round knob sits just below it.
+     track with a draggable round knob sits just below it. The track fills
+     blue from the left edge up behind the knob while it is dragged (filler
+     behaviour) and snaps to the nearest position on release.
      Left = Strongly Disagree ... right = Strongly Agree.
      Stored value uses the LIKERT_OPTIONS order, so value = 4 - sliderPos.
      Knob travel: knob is 32px wide, track inset 2px -> centers at 18px .. w-18px. */
   const slider = $('#likert-slider');
   const track  = $('#likert-track');
   const knob   = $('#likert-knob');
+  const fill   = $('#likert-fill');
   const ticks  = Array.from(slider.querySelectorAll('.toggle-tick'));
-  const labels = Array.from(slider.querySelectorAll('.toggle-label'));
   let current = 0;
+  let committed = false;
+
+  function metrics() {
+    const w = track.getBoundingClientRect().width;
+    return { travel: Math.max(0, w - 36) };
+  }
+
+  /* paint knob + fill for a continuous position 0..4 (may be fractional) */
+  function paint(pos, filled) {
+    const { travel } = metrics();
+    const knobLeft = 2 + (pos / 4) * travel;
+    knob.style.left = knobLeft + 'px';
+    /* fill runs past the knob's right edge so the ball sits under the fill
+       colour instead of pulling out of it (anchor look) */
+    fill.style.width = filled ? (knobLeft + 34) + 'px' : '0px';
+  }
 
   function apply(pos, commit = true) {
     current = pos;
-    const w = track.getBoundingClientRect().width;
-    const travel = Math.max(0, w - 36);
-    knob.style.left = (2 + (pos / 4) * travel) + 'px';
+    committed = commit;
+    paint(pos, commit);
     if (commit) {
       slider.dataset.value = String(pos);
       ticks.forEach((t, i) => t.classList.toggle('active', i === pos));
-      labels.forEach((l, i) => l.classList.toggle('active', i === pos));
     } else {
       /* parked knob, nothing chosen yet */
       slider.dataset.value = '';
       ticks.forEach(t => t.classList.remove('active'));
-      labels.forEach(l => l.classList.remove('active'));
     }
   }
 
-  function posFromEvent(e) {
+  function ratioFromEvent(e) {
     const r = track.getBoundingClientRect();
     const travel = Math.max(1, r.width - 36);
-    const x = e.clientX - r.left - 18; /* knob centre */
-    return Math.round(Math.min(Math.max(x, 0), travel) / travel * 4);
+    const x = Math.min(Math.max(e.clientX - r.left - 18, 0), travel); /* knob centre */
+    return x / travel;
   }
 
+  const posFromEvent = e => Math.round(ratioFromEvent(e) * 4);
+
   let dragging = false;
+  let pendingPos = 0;
   track.addEventListener('pointerdown', e => {
     dragging = true;
     slider.classList.add('dragging');
     track.setPointerCapture(e.pointerId);
-    apply(posFromEvent(e));
+    pendingPos = posFromEvent(e);
+    apply(pendingPos);
   });
-  track.addEventListener('pointermove', e => { if (dragging) apply(posFromEvent(e)); });
-  const endDrag = () => { dragging = false; slider.classList.remove('dragging'); };
+  track.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    pendingPos = posFromEvent(e);
+    paint(ratioFromEvent(e) * 4, true);  /* knob + fill follow the pointer continuously */
+    ticks.forEach((t, i) => t.classList.toggle('active', i === pendingPos));
+    slider.dataset.value = String(pendingPos);
+  });
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    slider.classList.remove('dragging');
+    apply(pendingPos); /* snap knob + fill to the chosen position */
+  };
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
-  window.addEventListener('resize', () => apply(current));
+  window.addEventListener('resize', () => apply(current, committed));
 
   if (savedValue != null && savedValue >= 0) apply(4 - savedValue);
   else apply(0, false); /* knob parked at the left, question unanswered */
